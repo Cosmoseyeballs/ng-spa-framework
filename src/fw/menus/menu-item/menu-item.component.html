@@ -1,0 +1,37 @@
+<div class="menu-item"
+ 
+  [ngClass]="{'vertical-menu':menuService.isVertical, 'router-link-active': isActiveRoute }" >
+
+  <span class="glyphicon {{item.icon}}"></span>
+  <span>{{ item.text.toUpperCase() }} </span>
+
+  <span *ngIf="item.submenu && !parentIsPopup && !menuService.isVertical" 
+        class="glyphicon glyphicon-menu-down"></span>
+        <!--hvis den har børn og ikke er en popud eller menu til venstre-->
+  <span *ngIf="item.submenu && parentIsPopup && !menuService.isVertical" 
+        class="glyphicon glyphicon-menu-right"></span>
+        <!--hvis den har børn og er en popud men ikke menu til venstre-->
+        
+  <span *ngIf="item.submenu && menuService.isVertical && !(mouseInPopup || mouseInItem)" 
+        class="glyphicon glyphicon-menu-left"></span> 
+        <!--hvis den har børn og menu til venstre  men ikke en item i popud eller musinitem??? -->
+        
+  <span *ngIf="item.submenu && menuService.isVertical && (mouseInPopup || mouseInItem)" 
+        class="glyphicon glyphicon-menu-down"></span> 
+
+        <!--hvis den har børn og menu til venstre  men er en item i popud eller musinitem??? -->
+        
+
+
+</div>
+
+<fw-popup-menu
+    *ngIf="mouseInPopup || mouseInItem"
+    [menu]="item.submenu"
+    [ngClass]="{'vertical-menu':menuService.isVertical}"
+    (mouseleave)="onPopupMouseLeave($event)"
+    (mouseenter)="onPopupMouseEnter($event)"
+    [style.left.px]="popupLeft"
+    [style.top.px]="popupTop"
+    @visibilityChanged>
+</fw-popup-menu>
